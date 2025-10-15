@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Bangers&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Caveat', cursive;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #87CEEB 0%, #FF1493 25%, #DC143C 50%, #000000 75%, #FF69B4 100%);
+            background-attachment: fixed;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            animation: bounceIn 1.5s ease-out;
+        }
+
+        .hero h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            text-shadow: 5px 5px 0px #FF1493, 10px 10px 0px #DC143C;
+            animation: wobble 2s ease-in-out infinite;
+            transform: rotate(-5deg);
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-5deg) translateY(0); }
+            25% { transform: rotate(-7deg) translateY(-10px); }
+            75% { transform: rotate(-3deg) translateY(-5px); }
+        }
+
+        .hero p {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: wiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            75% { transform: rotate(-2deg); }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-20deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .floating-emojis {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            font-size: 2rem;
+        }
+
+        .emoji {
+            position: absolute;
+            animation: floatEmoji 12s infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatEmoji {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .cards-container {
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 4px solid;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 8px 8px 0px rgba(255, 20, 147, 0.5);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card::before {
+            content: '✨';
+            position: absolute;
+            font-size: 3rem;
+            top: -20px;
+            right: -20px;
+            animation: spin 4s linear infinite;
+            filter: drop-shadow(0 0 10px #FF1493);
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Different border colors for variety */
+        .card:nth-child(1) { border-color: #FF69B4; }
+        .card:nth-child(2) { border-color: #DC143C; }
+        .card:nth-child(3) { border-color: #FF1493; }
+        .card:nth-child(4) { border-color: #FF69B4; }
+        .card:nth-child(5) { border-color: #DC143C; }
+        .card:nth-child(6) { border-color: #FF1493; }
+        .card:nth-child(7) { border-color: #FF69B4; }
+        .card:nth-child(8) { border-color: #DC143C; }
+        .card:nth-child(9) { border-color: #FF1493; }
+
+        /* Slide from left */
+        .card.slide-left {
+            transform: translateX(-150px) rotate(-15deg);
+        }
+
+        .card.slide-left.visible {
+            opacity: 1;
+            transform: translateX(0) rotate(0);
+        }
+
+        /* Slide from right */
+        .card.slide-right {
+            transform: translateX(150px) rotate(15deg);
+        }
+
+        .card.slide-right.visible {
+            opacity: 1;
+            transform: translateX(0) rotate(0);
+        }
+
+        /* Zoom in */
+        .card.zoom-in {
+            transform: scale(0.5) rotate(-25deg);
+        }
+
+        .card.zoom-in.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        /* Flip in */
+        .card.flip-in {
+            transform: perspective(1000px) rotateY(-180deg);
+        }
+
+        .card.flip-in.visible {
+            opacity: 1;
+            transform: perspective(1000px) rotateY(0);
+        }
+
+        /* Bounce in */
+        .card.bounce-in {
+            transform: translateY(150px) scale(0.5);
+        }
+
+        .card.bounce-in.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            animation: crazyBounce 0.9s ease-out;
+        }
+
+        @keyframes crazyBounce {
+            0% { transform: translateY(0) scale(1) rotate(0); }
+            30% { transform: translateY(-30px) scale(1.1) rotate(5deg); }
+            60% { transform: translateY(-15px) scale(0.95) rotate(-3deg); }
+            100% { transform: translateY(0) scale(1) rotate(0); }
+        }
+
+        /* Spiral in */
+        .card.spiral-in {
+            transform: scale(0.2) rotate(-360deg);
+        }
+
+        .card.spiral-in.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        /* Swing in */
+        .card.swing-in {
+            transform-origin: top;
+            transform: perspective(1000px) rotateX(-90deg) scale(0.8);
+        }
+
+        .card.swing-in.visible {
+            opacity: 1;
+            transform: perspective(1000px) rotateX(0) scale(1);
+        }
+
+        /* Fade blur */
+        .card.fade-blur {
+            filter: blur(30px);
+            transform: translateY(80px) scale(1.3);
+        }
+
+        .card.fade-blur.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+
+        /* Skew in */
+        .card.skew-in {
+            transform: skewX(-20deg) translateX(-100px);
+        }
+
+        .card.skew-in.visible {
+            opacity: 1;
+            transform: skewX(0) translateX(0);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotate(2deg) scale(1.05) !important;
+            box-shadow: 12px 12px 0px rgba(255, 20, 147, 0.7), 0 0 30px rgba(220, 20, 60, 0.5);
+            animation: shakeCard 0.5s ease-in-out;
+        }
+
+        @keyframes shakeCard {
+            0%, 100% { transform: translateY(-10px) rotate(2deg) scale(1.05); }
+            25% { transform: translateY(-10px) rotate(-2deg) scale(1.05); }
+            75% { transform: translateY(-10px) rotate(2deg) scale(1.05); }
+        }
+
+        .card-inner {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .card-image {
+            flex: 0 0 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 5px dashed #FF69B4;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: saturate(1.3) contrast(1.1);
+        }
+
+        .card:hover .card-image {
+            animation: spinImage 0.8s ease-in-out;
+        }
+
+        @keyframes spinImage {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.2);
+        }
+
+        .card-content {
+            flex: 1;
+            color: white;
+        }
+
+        .card-content h2 {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #FF1493;
+            text-shadow: 3px 3px 0px #DC143C, 6px 6px 0px rgba(0, 0, 0, 0.5);
+            transform: rotate(-2deg);
+            letter-spacing: 2px;
+        }
+
+        .card-content p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #FFF;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+            }
+
+            .card-inner {
+                flex-direction: column;
+            }
+
+            .card-image {
+                flex: 0 0 180px;
+                width: 180px;
+                height: 180px;
+            }
+
+            .cards-container {
+                padding: 2rem 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .card-content h2 {
+                font-size: 2rem;
+            }
+
+            .card-content p {
+                font-size: 1.1rem;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FF1493;
+            position: absolute;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-emojis" id="emojis"></div>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>HAPPY BIRTHDAY!!</h1>
+            <p>So I listed some of your favss so here are themm saying stuff :3</p>
+        </div>
+    </section>
+
+    <div class="cards-container">
+        <div class="card slide-left" data-card="1">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&h=400&fit=crop" alt="Xiao">
+                </div>
+                <div class="card-content">
+                    <h2>Xiao</h2>
+                    <p>This mortal concept of commemorating the day of your birth really is redundant. Wait. Have this. It's a butterfly I made from leaves.
+                        Okay. Take it. It's an adepti amulet — it staves off evil.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card zoom-in" data-card="2">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=400&h=400&fit=crop" alt="Lyney">
+                </div>
+                <div class="card-content">
+                    <h2>Lyney</h2>
+                    <p>I have a feather here, just an ordinary feather... Go ahead, you can hold it and see for yourself. Ready? And... boom! It was a party popper all along. Happy Birthday! See this? I caught one of the paper streamers floating down. Now, make a wish and picture a birthday gift in your mind's eye as I light it. Three... two... one... Great! Verrry good, I know exactly what you were thinking now. The last step, put your hand inside my hat... Well? Is it the gift you wanted?</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card flip-in" data-card="3">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?w=400&h=400&fit=crop" alt="Rafayel">
+                </div>
+                <div class="card-content">
+                    <h2>Rafayel</h2>
+                    <p>If I lose my sight one day, I'll be counting on you to see the world for me. Happy birthday!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card slide-right" data-card="4">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1613068687893-5e85b4638b56?w=400&h=400&fit=crop" alt="Diluc">
+                </div>
+                <div class="card-content">
+                    <h2>Diluc</h2>
+                    <p>Happy birthday. This is an important day for you. So tell me, what is it you wish for? If it is within my power to bestow it upon you, I will give it my consideration.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bounce-in" data-card="5">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" alt="Alhaitham">
+                </div>
+                <div class="card-content">
+                    <h2>Alhaitham</h2>
+                    <p>Happy birthday. I've always thought people are a little too enthusiastic about celebrating the day they were born. Wouldn't it be better to apply all that enthusiasm towards their daily lives and improve their standards of living? But you seem to have done well for yourself. I didn't know what kind of gift to get, so I'll just set up a special application channel, reserved for your submissions alone.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card spiral-in" data-card="6">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop" alt="Zanka">
+                </div>
+                <div class="card-content">
+                    <h2>Zanka</h2>
+                    <p>Happy Birthday  stay steady, stay real. Strength isn’t loud, it’s in how you keep moving forward, no matter what.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card swing-in" data-card="7">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Kinich">
+                </div>
+                <div class="card-content">
+                    <h2>Kinich</h2>
+                    <p> A ride through the skies on the back of the Almighty Dragonlord, K'uhul Ajaw is a once-in-a-lifetime honor.
+                        Kinich: Don't worry, it's just a gentle cruise through the forest. Just follow me. I planned out a route in advance and I promise it's safe.
+                        Ajaw: Don't forget what you promised me in return!
+                        Kinich: Alright, now hop on... Happy birthday.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card fade-blur" data-card="8">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" alt="Scaramouche">
+                </div>
+                <div class="card-content">
+                    <h2>Scaramouche</h2>
+                    <p>Give me your hand. Heh, there's no need to be nervous. I'm just taking you to a vantage point.
+                        How is it? The scenery here should be quite breathtaking. There's no need to thank me — I see little point in it.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card skew-in" data-card="9">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop" alt="Hoshina">
+                </div>
+                <div class="card-content">
+                    <h2>🗡️ Hoshina 🗡️</h2>
+                    <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating emojis
+        const emojisContainer = document.getElementById('emojis');
+        const emojiList = ['🎉', '🎂', '🎈', '✨', '🎊', '💖', '🌟', '🎁', '🦄', '🌈'];
+        
+        for (let i = 0; i < 30; i++) {
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji';
+            emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
+            emoji.style.left = Math.random() * 100 + '%';
+            emoji.style.animationDelay = Math.random() * 12 + 's';
+            emoji.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            emoji.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+            emojisContainer.appendChild(emoji);
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Random confetti burst on card hover
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                for (let i = 0; i < 10; i++) {
+                    createConfetti(card);
+                }
+            });
+        });
+
+        function createConfetti(card) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            const colors = ['#FF69B4', '#DC143C', '#FF1493', '#FFD700', '#87CEEB'];
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = Math.random() * 100 + '%';
+            confetti.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            card.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
