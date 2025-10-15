@@ -12,10 +12,14 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Caveat', cursive;
-            overflow-x: hidden;
-            background: linear-gradient(180deg, #87CEEB 0%, #FF1493 25%, #DC143C 50%, #000000 75%, #FF69B4 100%);
+            background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 20%, #ADD8E6 40%, #87CEFA 60%, #6BB6D9 80%, #4A90E2 100%);
             background-attachment: fixed;
         }
 
@@ -26,97 +30,61 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 100%);
+            background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #4A90E2 100%);
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            width: 300%;
-            height: 300%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            animation: slowFloat 15s ease-in-out infinite;
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes slowFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
         }
 
         .hero-content {
             text-align: center;
             color: white;
             z-index: 2;
-            animation: bounceIn 1.5s ease-out;
+            animation: gentleBounce 1.2s ease-out;
         }
 
         .hero h1 {
             font-family: 'Bangers', cursive;
-            font-size: 6rem;
+            font-size: 5rem;
             margin-bottom: 1rem;
-            text-shadow: 5px 5px 0px #FF1493, 10px 10px 0px #DC143C;
-            animation: wobble 2s ease-in-out infinite;
-            transform: rotate(-5deg);
+            text-shadow: 4px 4px 0px rgba(74, 144, 226, 0.8);
+            animation: gentleWobble 3s ease-in-out infinite;
+            transform: rotate(-3deg);
         }
 
-        @keyframes wobble {
-            0%, 100% { transform: rotate(-5deg) translateY(0); }
-            25% { transform: rotate(-7deg) translateY(-10px); }
-            75% { transform: rotate(-3deg) translateY(-5px); }
+        @keyframes gentleWobble {
+            0%, 100% { transform: rotate(-3deg) translateY(0); }
+            50% { transform: rotate(-2deg) translateY(-8px); }
         }
 
         .hero p {
             font-family: 'Pacifico', cursive;
-            font-size: 2rem;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            animation: wiggle 3s ease-in-out infinite;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(2deg); }
-            75% { transform: rotate(-2deg); }
-        }
-
-        @keyframes bounceIn {
+        @keyframes gentleBounce {
             0% {
                 opacity: 0;
-                transform: scale(0.3) rotate(-20deg);
+                transform: scale(0.8);
             }
-            50% {
-                transform: scale(1.1) rotate(5deg);
+            60% {
+                transform: scale(1.05);
             }
             100% {
                 opacity: 1;
-                transform: scale(1) rotate(0);
-            }
-        }
-
-        .floating-emojis {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            font-size: 2rem;
-        }
-
-        .emoji {
-            position: absolute;
-            animation: floatEmoji 12s infinite;
-            opacity: 0;
-        }
-
-        @keyframes floatEmoji {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
+                transform: scale(1);
             }
         }
 
@@ -127,156 +95,72 @@
         }
 
         .card {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 30px;
+            border-radius: 25px;
             padding: 2rem;
             margin-bottom: 3rem;
-            border: 4px solid;
+            border: 3px solid rgba(135, 206, 235, 0.5);
             opacity: 0;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 8px 8px 0px rgba(255, 20, 147, 0.5);
+            transition: all 0.6s ease-out;
+            box-shadow: 5px 5px 15px rgba(74, 144, 226, 0.3);
             position: relative;
-            transform-style: preserve-3d;
         }
-
-        .card::before {
-            content: '✨';
-            position: absolute;
-            font-size: 3rem;
-            top: -20px;
-            right: -20px;
-            animation: spin 4s linear infinite;
-            filter: drop-shadow(0 0 10px #FF1493);
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Different border colors for variety */
-        .card:nth-child(1) { border-color: #FF69B4; }
-        .card:nth-child(2) { border-color: #DC143C; }
-        .card:nth-child(3) { border-color: #FF1493; }
-        .card:nth-child(4) { border-color: #FF69B4; }
-        .card:nth-child(5) { border-color: #DC143C; }
-        .card:nth-child(6) { border-color: #FF1493; }
-        .card:nth-child(7) { border-color: #FF69B4; }
-        .card:nth-child(8) { border-color: #DC143C; }
-        .card:nth-child(9) { border-color: #FF1493; }
 
         /* Slide from left */
         .card.slide-left {
-            transform: translateX(-150px) rotate(-15deg);
+            transform: translateX(-80px);
         }
 
         .card.slide-left.visible {
             opacity: 1;
-            transform: translateX(0) rotate(0);
+            transform: translateX(0);
         }
 
         /* Slide from right */
         .card.slide-right {
-            transform: translateX(150px) rotate(15deg);
+            transform: translateX(80px);
         }
 
         .card.slide-right.visible {
             opacity: 1;
-            transform: translateX(0) rotate(0);
+            transform: translateX(0);
         }
 
-        /* Zoom in */
-        .card.zoom-in {
-            transform: scale(0.5) rotate(-25deg);
+        /* Fade up */
+        .card.fade-up {
+            transform: translateY(60px);
         }
 
-        .card.zoom-in.visible {
+        .card.fade-up.visible {
             opacity: 1;
-            transform: scale(1) rotate(0);
+            transform: translateY(0);
         }
 
-        /* Flip in */
-        .card.flip-in {
-            transform: perspective(1000px) rotateY(-180deg);
+        /* Scale in */
+        .card.scale-in {
+            transform: scale(0.85);
         }
 
-        .card.flip-in.visible {
+        .card.scale-in.visible {
             opacity: 1;
-            transform: perspective(1000px) rotateY(0);
+            transform: scale(1);
         }
 
-        /* Bounce in */
-        .card.bounce-in {
-            transform: translateY(150px) scale(0.5);
+        /* Rotate in */
+        .card.rotate-in {
+            transform: rotate(-5deg) translateY(40px);
         }
 
-        .card.bounce-in.visible {
+        .card.rotate-in.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
-            animation: crazyBounce 0.9s ease-out;
-        }
-
-        @keyframes crazyBounce {
-            0% { transform: translateY(0) scale(1) rotate(0); }
-            30% { transform: translateY(-30px) scale(1.1) rotate(5deg); }
-            60% { transform: translateY(-15px) scale(0.95) rotate(-3deg); }
-            100% { transform: translateY(0) scale(1) rotate(0); }
-        }
-
-        /* Spiral in */
-        .card.spiral-in {
-            transform: scale(0.2) rotate(-360deg);
-        }
-
-        .card.spiral-in.visible {
-            opacity: 1;
-            transform: scale(1) rotate(0);
-        }
-
-        /* Swing in */
-        .card.swing-in {
-            transform-origin: top;
-            transform: perspective(1000px) rotateX(-90deg) scale(0.8);
-        }
-
-        .card.swing-in.visible {
-            opacity: 1;
-            transform: perspective(1000px) rotateX(0) scale(1);
-        }
-
-        /* Fade blur */
-        .card.fade-blur {
-            filter: blur(30px);
-            transform: translateY(80px) scale(1.3);
-        }
-
-        .card.fade-blur.visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: translateY(0) scale(1);
-        }
-
-        /* Skew in */
-        .card.skew-in {
-            transform: skewX(-20deg) translateX(-100px);
-        }
-
-        .card.skew-in.visible {
-            opacity: 1;
-            transform: skewX(0) translateX(0);
+            transform: rotate(0) translateY(0);
         }
 
         .card:hover {
-            transform: translateY(-10px) rotate(2deg) scale(1.05) !important;
-            box-shadow: 12px 12px 0px rgba(255, 20, 147, 0.7), 0 0 30px rgba(220, 20, 60, 0.5);
-            animation: shakeCard 0.5s ease-in-out;
-        }
-
-        @keyframes shakeCard {
-            0%, 100% { transform: translateY(-10px) rotate(2deg) scale(1.05); }
-            25% { transform: translateY(-10px) rotate(-2deg) scale(1.05); }
-            75% { transform: translateY(-10px) rotate(2deg) scale(1.05); }
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 8px 8px 20px rgba(74, 144, 226, 0.5);
+            border-color: rgba(135, 206, 235, 0.8);
         }
 
         .card-inner {
@@ -288,39 +172,22 @@
         .card-image {
             flex: 0 0 200px;
             height: 200px;
-            border-radius: 50%;
+            border-radius: 20px;
             overflow: hidden;
             position: relative;
-            border: 5px dashed #FF69B4;
-            box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            border: 3px solid rgba(135, 206, 235, 0.6);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
         }
 
         .card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
-            filter: saturate(1.3) contrast(1.1);
-        }
-
-        .card:hover .card-image {
-            animation: spinImage 0.8s ease-in-out;
-        }
-
-        @keyframes spinImage {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
+            transition: transform 0.4s ease;
         }
 
         .card:hover .card-image img {
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
 
         .card-content {
@@ -330,28 +197,46 @@
 
         .card-content h2 {
             font-family: 'Bangers', cursive;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 1rem;
-            color: #FF1493;
-            text-shadow: 3px 3px 0px #DC143C, 6px 6px 0px rgba(0, 0, 0, 0.5);
-            transform: rotate(-2deg);
-            letter-spacing: 2px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(74, 144, 226, 0.8);
+            letter-spacing: 1px;
         }
 
         .card-content p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             line-height: 1.6;
-            color: #FFF;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .parallax-image {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin: 4rem auto;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.4);
+            border: 4px solid rgba(135, 206, 235, 0.5);
+            position: relative;
+        }
+
+        .parallax-image img {
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+            transition: transform 0.1s ease-out;
         }
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 3.5rem;
+                font-size: 3rem;
             }
 
             .hero p {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
             .card-inner {
@@ -360,7 +245,7 @@
 
             .card-image {
                 flex: 0 0 180px;
-                width: 180px;
+                width: 100%;
                 height: 180px;
             }
 
@@ -373,39 +258,64 @@
             }
 
             .card-content h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
 
             .card-content p {
                 font-size: 1.1rem;
             }
-        }
 
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #FF1493;
-            position: absolute;
-            animation: confettiFall 3s linear infinite;
-        }
-
-        @keyframes confettiFall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
+            .parallax-image {
+                height: 300px;
+                margin: 3rem 1rem;
             }
+        }
+
+        .cloud {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            animation: floatCloud 20s linear infinite;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud::after {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            right: 10px;
+        }
+
+        @keyframes floatCloud {
+            from { left: -150px; }
+            to { left: 110%; }
         }
     </style>
 </head>
 <body>
-    <div class="floating-emojis" id="emojis"></div>
-    
     <section class="hero">
         <div class="hero-content">
             <h1>HAPPY BIRTHDAY!!</h1>
             <p>So I listed some of your favss so here are themm saying stuff :3</p>
         </div>
+        <div class="cloud" style="top: 20%; animation-delay: 0s; animation-duration: 25s;"></div>
+        <div class="cloud" style="top: 60%; animation-delay: 5s; animation-duration: 30s;"></div>
+        <div class="cloud" style="top: 40%; animation-delay: 10s; animation-duration: 35s;"></div>
     </section>
 
     <div class="cards-container">
@@ -416,13 +326,12 @@
                 </div>
                 <div class="card-content">
                     <h2>Xiao</h2>
-                    <p>This mortal concept of commemorating the day of your birth really is redundant. Wait. Have this. It's a butterfly I made from leaves.
-                        Okay. Take it. It's an adepti amulet — it staves off evil.</p>
+                    <p>This mortal concept of commemorating the day of your birth really is redundant. Wait. Have this. It's a butterfly I made from leaves. Okay. Take it. It's an adepti amulet — it staves off evil.</p>
                 </div>
             </div>
         </div>
 
-        <div class="card zoom-in" data-card="2">
+        <div class="card slide-right" data-card="2">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=400&h=400&fit=crop" alt="Lyney">
@@ -434,7 +343,11 @@
             </div>
         </div>
 
-        <div class="card flip-in" data-card="3">
+        <div class="parallax-image" id="parallax1">
+            <img src="https://images.unsplash.com/photo-1464047736614-af63643285bf?w=1200&h=800&fit=crop" alt="Sky">
+        </div>
+
+        <div class="card fade-up" data-card="3">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?w=400&h=400&fit=crop" alt="Rafayel">
@@ -446,7 +359,7 @@
             </div>
         </div>
 
-        <div class="card slide-right" data-card="4">
+        <div class="card scale-in" data-card="4">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1613068687893-5e85b4638b56?w=400&h=400&fit=crop" alt="Diluc">
@@ -458,7 +371,11 @@
             </div>
         </div>
 
-        <div class="card bounce-in" data-card="5">
+        <div class="parallax-image" id="parallax2">
+            <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1200&h=800&fit=crop" alt="Stars">
+        </div>
+
+        <div class="card rotate-in" data-card="5">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" alt="Alhaitham">
@@ -470,80 +387,83 @@
             </div>
         </div>
 
-        <div class="card spiral-in" data-card="6">
+        <div class="card slide-left" data-card="6">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop" alt="Zanka">
                 </div>
                 <div class="card-content">
                     <h2>Zanka</h2>
-                    <p>Happy Birthday  stay steady, stay real. Strength isn’t loud, it’s in how you keep moving forward, no matter what.
-                    </p>
+                    <p>Happy Birthday stay steady, stay real. Strength isn't loud, it's in how you keep moving forward, no matter what.</p>
                 </div>
             </div>
         </div>
 
-        <div class="card swing-in" data-card="7">
+        <div class="card slide-right" data-card="7">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Kinich">
                 </div>
                 <div class="card-content">
                     <h2>Kinich</h2>
-                    <p> A ride through the skies on the back of the Almighty Dragonlord, K'uhul Ajaw is a once-in-a-lifetime honor.
-                        Kinich: Don't worry, it's just a gentle cruise through the forest. Just follow me. I planned out a route in advance and I promise it's safe.
-                        Ajaw: Don't forget what you promised me in return!
-                        Kinich: Alright, now hop on... Happy birthday.</p>
+                    <p>A ride through the skies on the back of the Almighty Dragonlord, K'uhul Ajaw is a once-in-a-lifetime honor.
+                    Kinich: Don't worry, it's just a gentle cruise through the forest. Just follow me. I planned out a route in advance and I promise it's safe.
+                    Ajaw: Don't forget what you promised me in return!
+                    Kinich: Alright, now hop on... Happy birthday.</p>
                 </div>
             </div>
         </div>
 
-        <div class="card fade-blur" data-card="8">
+        <div class="parallax-image" id="parallax3">
+            <img src="https://images.unsplash.com/photo-1517423568366-8b83523034fd?w=1200&h=800&fit=crop" alt="Ocean">
+        </div>
+
+        <div class="card fade-up" data-card="8">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" alt="Scaramouche">
                 </div>
                 <div class="card-content">
                     <h2>Scaramouche</h2>
-                    <p>Give me your hand. Heh, there's no need to be nervous. I'm just taking you to a vantage point.
-                        How is it? The scenery here should be quite breathtaking. There's no need to thank me — I see little point in it.</p>
+                    <p>Give me your hand. Heh, there's no need to be nervous. I'm just taking you to a vantage point. How is it? The scenery here should be quite breathtaking. There's no need to thank me — I see little point in it.</p>
                 </div>
             </div>
         </div>
 
-        <div class="card skew-in" data-card="9">
+        <div class="card scale-in" data-card="9">
             <div class="card-inner">
                 <div class="card-image">
                     <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop" alt="Hoshina">
                 </div>
                 <div class="card-content">
-                    <h2>🗡️ Hoshina 🗡️</h2>
-                    <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae!</p>
+                    <h2>Hoshina</h2>
+                    <p>Happy Birthday! Keep your blades sharp and your spirit sharper. Every fight is won before it starts — in the mind, in the heart. Stay ready, stay fearless.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="parallax-image" id="parallax4">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop" alt="Mountains">
+        </div>
+
+        <div class="card rotate-in" data-card="10">
+            <div class="card-inner">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop" alt="Final">
+                </div>
+                <div class="card-content">
+                    <h2>One More Thing...</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Have an amazing birthday! 🎉</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Create floating emojis
-        const emojisContainer = document.getElementById('emojis');
-        const emojiList = ['🎉', '🎂', '🎈', '✨', '🎊', '💖', '🌟', '🎁', '🦄', '🌈'];
-        
-        for (let i = 0; i < 30; i++) {
-            const emoji = document.createElement('div');
-            emoji.className = 'emoji';
-            emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
-            emoji.style.left = Math.random() * 100 + '%';
-            emoji.style.animationDelay = Math.random() * 12 + 's';
-            emoji.style.animationDuration = (Math.random() * 8 + 6) + 's';
-            emoji.style.fontSize = (Math.random() * 2 + 1) + 'rem';
-            emojisContainer.appendChild(emoji);
-        }
-
         // Scroll animations
         const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -558,27 +478,38 @@
             observer.observe(card);
         });
 
-        // Random confetti burst on card hover
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                for (let i = 0; i < 10; i++) {
-                    createConfetti(card);
-                }
+        // Parallax effect for images
+        window.addEventListener('scroll', () => {
+            const parallaxImages = document.querySelectorAll('.parallax-image img');
+            
+            parallaxImages.forEach(img => {
+                const rect = img.parentElement.getBoundingClientRect();
+                const scrollPercent = (rect.top - window.innerHeight) / (rect.height + window.innerHeight);
+                const movement = scrollPercent * 40;
+                img.style.transform = `translateY(${movement}px)`;
             });
         });
 
-        function createConfetti(card) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            const colors = ['#FF69B4', '#DC143C', '#FF1493', '#FFD700', '#87CEEB'];
-            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.top = Math.random() * 100 + '%';
-            confetti.style.animationDuration = (Math.random() * 2 + 1) + 's';
-            card.appendChild(confetti);
+        // Tilt effect on card hover
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale(1.02)`;
+            });
             
-            setTimeout(() => confetti.remove(), 3000);
-        }
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
     </script>
 </body>
 </html>
